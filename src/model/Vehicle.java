@@ -1,48 +1,56 @@
 package model;
 
-public abstract class Vehicle 
-{
-    // Attributes
-    private double basePrice;
-    private double salePrice;
-    private String mark;
-    private String model;
-    private double cylinderCapacity;
-    private double mileage;
-    private boolean isNew;
-    private int[][] propertyCard = new int[4][4];
+public abstract class Vehicle {
 
-    private Soat soat;
-    private MechanicalTechnician mt;
+    public static final int MAX_DOCUMENT = 2;
 
-    // Constructor
-    public Vehicle(
-        double basePrice, double salePrice, String mark, String model,
-        double cylinderCapacity, double mileage, boolean isNew
-    ) {
+    protected String id;
+    protected double basePrice;
+    protected double salePrice;
+    protected String brand;
+    protected int modell;
+    protected double displacement;
+    protected double mileage;
+    protected String type;
+    protected String plaque;
+    protected boolean havePropertyCard;
+    protected String propertyCard;
+
+    protected TechnicalMechanical review;
+    protected Soat soat;
+
+
+    private Document [] documents =  new Document [MAX_DOCUMENT];
+
+    public Vehicle(String id, double basePrice, double salePrice, String brand, int modell, double displacement, double mileage,String type, String plaque, boolean havePropertyCard, String propertyCard, TechnicalMechanical review, Soat soat) {
+        this.id = id;
         this.basePrice = basePrice;
         this.salePrice = salePrice;
-        this.mark = mark;
-        this.model = model;
-        this.cylinderCapacity = cylinderCapacity;
+        this.brand = brand;
+        this.modell = modell;
+        this.displacement = displacement;
         this.mileage = mileage;
-        this.isNew = isNew;
-        this.propertyCard = randomImage();
-        this.soat = new Soat(0,0, randomImage());
-        this.mt = new MechanicalTechnician(0,0, randomImage());
+        this.type = type;
+        this.plaque = plaque;
+        this.havePropertyCard = havePropertyCard;
+        this.propertyCard = propertyCard;
+        this.review = review;
+        this.soat = soat;
     }
 
-    public int[][] randomImage() {
-        int[][] newMatrix = new int[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                newMatrix[i][j] = (int) (Math.random() * 100) + 1;
-            }
-        }
-        return newMatrix;
+    /**
+     * @return String return the id
+     */
+    public String getId() {
+        return id;
     }
 
-    // Getters and Setters
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * @return double return the basePrice
@@ -73,45 +81,31 @@ public abstract class Vehicle
     }
 
     /**
-     * @return String return the mark
+     * @return String return the brand
      */
-    public String getMark() {
-        return mark;
+    public String getBrand() {
+        return brand;
     }
 
     /**
-     * @param mark the mark to set
+     * @param brand the brand to set
      */
-    public void setMark(String mark) {
-        this.mark = mark;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     /**
-     * @return String return the model
+     * @return double return the displacement
      */
-    public String getModel() {
-        return model;
+    public double getDisplacement() {
+        return displacement;
     }
 
     /**
-     * @param model the model to set
+     * @param displacement the displacement to set
      */
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    /**
-     * @return double return the cylinderCapacity
-     */
-    public double getCylinderCapacity() {
-        return cylinderCapacity;
-    }
-
-    /**
-     * @param cylinderCapacity the cylinderCapacity to set
-     */
-    public void setCylinderCapacity(double cylinderCapacity) {
-        this.cylinderCapacity = cylinderCapacity;
+    public void setDisplacement(double displacement) {
+        this.displacement = displacement;
     }
 
     /**
@@ -129,95 +123,115 @@ public abstract class Vehicle
     }
 
     /**
-     * @return boolean return the isNew
+     * @return String return the plaque
      */
-    public boolean getIsNew() {
-        return isNew;
+    public String getPlaque() {
+        return plaque;
     }
 
     /**
-     * @param isNew the isNew to set
+     * @param plaque the plaque to set
      */
-    public void setIsNew(boolean isNew) {
-        this.isNew = isNew;
+    public void setPlaque(String plaque) {
+        this.plaque = plaque;
     }
-        /**
-     * @return boolean return the isNew
+
+    /**
+     * @return boolean return the havePropertyCard
      */
-    public boolean isIsNew() {
-        return isNew;
+    public boolean getHavePropertyCard() {
+        return havePropertyCard;
+    }
+
+    /**
+     * @param propertyCardd the havePropertyCard to set
+     */
+    public void setHavePropertyCard(boolean havePropertyCard) {
+        this.havePropertyCard = havePropertyCard;
     }
 
     /**
      * @return String return the propertyCard
      */
     public String getPropertyCard() {
-        String fullPropetyCard = "";
-        fullPropetyCard = this.propertyCard[3][3] + "";
-        fullPropetyCard += this.propertyCard[3][1] + "";
-        fullPropetyCard += this.propertyCard[2][2] + "";
-        fullPropetyCard += this.propertyCard[2][0] + "";
-        fullPropetyCard += this.propertyCard[1][3] + "";
-        fullPropetyCard += this.propertyCard[1][1] + "";
-        fullPropetyCard += this.propertyCard[0][2] + "";
-        return fullPropetyCard;
+        return propertyCard;
     }
 
     /**
      * @param propertyCard the propertyCard to set
      */
-    public void setPropertyCard(int[][] propertyCard) {
+    public void setPropertyCard(String propertyCard) {
         this.propertyCard = propertyCard;
     }
 
+
     /**
-     * @return Soat return the soat
+     * @return boolean return the type
      */
-    public Soat getSoat() {
-        return soat;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @param soat the soat to set
+     * @param type the type to set
      */
-    public void setSoat(Soat soat) {
-        this.soat = soat;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    /**
+     * @return Document return the documents
+     */
+    public Document[] getDocuments() {
+        return documents;
     }
 
     /**
-     * @return MechanicalTechnician return the mt
+     * @param documents the documents to set
      */
-    public MechanicalTechnician getMt() {
-        return mt;
+    public void setDocuments(Document[] documents) {
+        this.documents = documents;
     }
 
     /**
-     * @param mt the mt to set
+     * @return String return the modell
      */
-    public void setMt(MechanicalTechnician mt) {
-        this.mt = mt;
+    public int getModell() {
+        return modell;
     }
 
-    // toString
-    /*
-    double basePrice, double salePrice, String mark, String model,
-    double cylinderCapacity, double mileage, boolean isNew
-    */
-    public String toString() {
-        String outNew = "";
-        if (getIsNew() == false) {
-            outNew = "The vehicle is NOT NEW";
-        } else {
-            outNew = "The vehicle is NEW";
-        }
-        return "Base price: " + basePrice + "\n" +
-                "Sale price: " + salePrice + "\n" +
-                "Mark: " + mark + "\n" +
-                "Model: " + model + "\n" +
-                "Cylinder capacity: " + cylinderCapacity + "\n" +
-                "Mileage: " + mileage + "\n" +
-                "Property Card: " + getPropertyCard() + "\n" +
-                outNew + "\n"
-        ;
+    /**
+     * @param documents the documents to set
+     */
+    public void setModell(int modell) {
+        this.modell = modell;
+    }
+
+    public String informe(){
+
+        String out = "";
+
+        return out;
+    }
+
+    public int getSoatYear(){
+
+        return soat.getYear();
+    }
+
+    public int getTechnicalReviewYear(){
+
+        return review.getYear();
+    }
+
+    public String getSoat(){
+
+        return soat.toString();
+    }
+
+    public String getTechnicalReview(){
+
+        return review.toString();
     }
 }

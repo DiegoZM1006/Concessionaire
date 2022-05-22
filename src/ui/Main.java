@@ -39,11 +39,15 @@ public class Main
 	public int showMenu() {
 		try {
 			SOUT.print(
-				"\n******* MENU ******* \n" +
-				"(1) Crear un vehiculo \n" +
-				"(0) Salir \n" +
-				"==> "
-			);
+				"\n*-------- MENU --------*\n" +
+				"(1) Register vehicle \n" +
+				"(2) Calculate total selling price \n"+
+				"(3) Generate reports with all vehicle data\n"+
+				"(4) Show document status\n" + 
+                "(5) Generate system map\n" + 
+                "(6) Generate system lot occupancy reports\n" +  
+				"(0) To leave the application --> "
+				);
 			op = sc.nextInt();
 		} catch (InputMismatchException e) {
 			SOUT.println("\nIngresa un numero");
@@ -54,198 +58,392 @@ public class Main
 	}
 
 	public void executeOperation(int op) {
-		switch (op) {
-			case -1:
-				break;
+		switch(op) {
 			case 0:
-				SOUT.println("\nBye :C");
+				SOUT.println("Bye!");
 				break;
 			case 1:
-				createVehicle();
+				registerVehicle();
 				break;
+			case 2:
+				showSalePrice();
+				break;
+			case 3:
+				generateReport();
+				break;
+			case 4:
+				searchVehicleById();
+				break;
+			case 5:
+				printMap();
+				break;
+			case 6:
+				systemReports();
+				break;      
 			default:
-				SOUT.println("\nOpcion no valida :C\n");
-				break;
-		}
+				SOUT.println("Error, wrong option");
+			
+			}
 	}
 
-	public void createVehicle() {
+	public void registerVehicle() {
+
+		String id, brand, type = "", plaque, propertyCard;
+
+		int op = 0, modell, opType = 0, opWasSold, opTypeMotorcycle = 0, opTypeCharger = 0, numberOfDoors = 0, polarized, opTypeGas = 0, opTypeCar = 0, year, year2;
+
+		double basePrice, salePrice, displacement = 0, milleage = 0, gasCapacity, gasConsumption = 0, tankCapacity = 0, batteryDuration = 0, batteryConsumption = 0, price, amountCoverage, gasLevels, price2;
+
+		boolean havePropertyCard = false, polarizedWindows = false;
 
 		SOUT.println(
 			"\n" +
 			"************************\n" +
 			"|*--CREATING VEHICLE--*|\n" +
-			"************************"
+			"************************\n"
 			);
 
-		double basePrice = 0, salePrice = 0, cylinderCapacity = 0;
-		int opIsNew = 0, opSold = 0;
-		boolean isNew, sold;
+		SOUT.println("!! PLEASE ENTER THE NEXT INFORMATION !!\n");
 
-		SOUT.println("Please enter the next information");
+		SOUT.print("Enter the id of the vehicle: ");
+		id = sc.next();
 
-		do {
-			SOUT.print("Base price: ");
-			basePrice = sc.nextDouble();
-		} while(basePrice < 0);
-
-		do {
-			SOUT.print("Sale price: ");
-			salePrice = sc.nextDouble();
-		} while(salePrice < 0);
-		
-		SOUT.print("Mark: ");
+		SOUT.print("Enter the base price of the vehicle: ");
+		basePrice = sc.nextDouble();
 		sc.nextLine();
-		String mark = sc.nextLine();
-		SOUT.print("Model: ");
-		String model = sc.nextLine();
-		
-		do {
-			SOUT.print("Cylinder capacity: ");
-			cylinderCapacity = sc.nextDouble();
-		} while(cylinderCapacity < 0);
 
-		SOUT.print("Mileage: ");
-		double mileage = sc.nextDouble();
-		
-		do { 
-			SOUT.print("The vehicle is new?: \n" + "(1) Yes \n(2) No \n==> ");
-			opIsNew = sc.nextInt();
-		} while(opIsNew != 1 && opIsNew != 2);
+		SOUT.print("Enter the brand of the vehicle: ");
+		brand = sc.nextLine();
+
+		SOUT.print("Enter the model of the vehicle: ");
+		modell = sc.nextInt();
+
+		SOUT.print("Enter the displacement of the vehicle: ");
+		displacement = sc.nextInt();
+		sc.nextLine();
+
+		SOUT.print("Enter the milleage of the vehicle: ");
+		milleage = sc.nextDouble();
 
 		do {
-			SOUT.print("The vehicle was sold?: \n" + "(1) Yes \n(2) No \n==> ");
-			opSold = sc.nextInt();
-		} while(opSold != 1 && opSold != 2);
+			SOUT.print("PLEASE PICK A OPTION\n Your vehicle is?: \n (1) USED \n (2) NEW: ");
+			opType = sc.nextInt();
+		} while (opType != 1 && opType != 2);
 
-		isNew = (opIsNew == 1) ? true : false;
-		sold = (opSold == 1) ? true : false;
+		switch (opType) {
+			case 1:
+				type = "USED";
+				break;
+			case 2:
+				type = "NEW";
+				break;
+		}
 
-		chooseTypeVehicle(
-			basePrice, salePrice, mark, model, 
-			cylinderCapacity, mileage, isNew, sold
-			);
-	}
+		if (type.equalsIgnoreCase("NEW")) {
+			plaque = "NOT ASSIGNED";
+		} else {
+			SOUT.print("Enter the plaque of the vehicle: ");
+			plaque = sc.next();
+		}
 
-	public void chooseTypeVehicle(
-		double basePrice, double salePrice, String mark, String model,
-        double cylinderCapacity, double mileage, boolean isNew, boolean sold
-	) {
-		SOUT.println(
+		do {
+			SOUT.print("Does the vehicle have been sold?\n (1) YES \n (2) NO: ");
+			opWasSold = sc.nextInt();
+		} while(opWasSold != 1 && opWasSold != 2);
+
+		switch (opWasSold) {
+			case 1:
+				havePropertyCard = true;
+				break;
+			case 2:
+				havePropertyCard = false;
+				break;
+		}
+
+		if (havePropertyCard) {
+			propertyCard = system.travelMatrixCard();
+		} else {
+			propertyCard = "NOT SOLD";
+		}
+
+		SOUT.print("Enter the price of the SOAT document: ");
+		price = sc.nextDouble();
+
+		SOUT.print("Enter the year of the SOAT document: ");
+		year = sc.nextInt();
+		sc.nextLine();
+
+		SOUT.print("Enter the amount of coverage of the SOAT document: ");
+		amountCoverage = sc.nextDouble();
+
+		SOUT.print("Enter the price of the Tecnichal Mechanical Review document: ");
+		price2 = sc.nextDouble();
+
+		SOUT.print("Enter the year of the Tecnichal Mechanical Review document: ");
+		year2 = sc.nextInt();
+		sc.nextLine();
+
+		SOUT.print("Enter the gas levels of the vehicle for the Tecnichal Mechanical Review document: ");
+		gasLevels = sc.nextDouble();
+
+		SOUT.print(
 			"\n" +
 			"**********************************\n" +
 			"|*--CHOOSE THE TYPE OF VEHICLE--*|\n" +
-			"**********************************"
+			"**********************************\n"
 			);
-		
-		int opVehicle = 0;
 
 		do {
 			SOUT.print(
-				"What type of vehicle do you want to choose?: \n" +
-				"(1) Automobile \n" +
-				"(2) Motorcycle \n" +
-				"==> "
-			);
-			opVehicle = sc.nextInt();
-		} while(opVehicle != 1 && opVehicle != 2);
-
-		int opAutoMotoType = 0;
-
-		switch (opVehicle) {
-			case 1:
-				String autoMobileType;
-
-				do {
-					SOUT.print("What is the type of your automobile: \n(1) SEDAN \n(2) CAMIONETA \n==> ");
-					opAutoMotoType = sc.nextInt();
-				} while(opAutoMotoType != 1 && opAutoMotoType != 2);
-
-				autoMobileType = (opAutoMotoType == 1) ? "SEDAN" : "CAMIONETA";
-
-				SOUT.println(
-					"\n" +
-					"*************************************\n" +
-					"|*--CHOOSE THE TYPE OF AUTOMOBILE--*|\n" +
-					"************************************"
+				"TYPE OF VEHICLE\n"+
+				"(1) Motrocycle\n" +
+				"(2) Gas Car\n" +
+				"(3) Electric Car\n" + 
+				"(4) Hybrid Car --> "
 				);
+			op = sc.nextInt();
+		} while(op != 1 && op != 2 && op != 3 && op != 4);
 
-				String vehicleType;
+		if (op != 1) {
+
+			SOUT.print("Enter the type of the Car\n" +
+				"(1) SEDAN\n" +
+            	"(2) CAMIONETA\n");
+            opTypeCar = sc.nextInt();
+            sc.nextLine();
+
+			SOUT.print("Enter the number of the doors: ");
+			numberOfDoors = sc.nextInt();
+
+			do {
+				SOUT.print("The windows are polarized\n (1) YES \n (2) NO --> ");
+				polarized = sc.nextInt();
+			} while(polarized != 1 && polarized != 2);
+
+			switch (polarized) {
+				case 1:
+					polarizedWindows = true;
+					break;
+				case 2:
+					polarizedWindows = false;
+					break;
+			}
+
+			if (op == 2 || op == 4) {
+
+				SOUT.print("Enter the type of gas of the Car\n" +
+					"(1) EXTRA\n"+
+					"(2) CORRIENTE\n"+ 
+					"(3) DIESEL --> "
+					);
+				opTypeGas = sc.nextInt();
+				sc.nextLine();
+
+				SOUT.print("Enter the tank capacity of the Car: ");
+                tankCapacity = sc.nextDouble();
+
+				gasConsumption = tankCapacity*(displacement*150);
+
+                SOUT.print("The gas consumption of the Car is: " + gasConsumption);
+
+			} 
+			if (op == 3 || op == 4) {
 
 				do {
-					SOUT.print(
-						"What type of automobile do you want to choose?: \n" +
-						"(1) Gasoline car \n" +
-						"(2) Electric car \n" +
-						"(3) Hybrid car \n" +
-						"==> "
-					);
-					opVehicle = sc.nextInt();
-				} while (opVehicle != 1 && opVehicle != 2 && opVehicle != 3);
+					SOUT.print("Enter the type of charger:\n" + 
+						"(1) FAST\n" + 
+						"(2) NORMAL --> "
+						);
+					opTypeCharger = sc.nextInt();
+					sc.nextLine();
+				} while (opTypeCharger != 1 && opTypeCharger != 2);
 
-				switch (opVehicle) {
-					case 1:
-						vehicleType = "Gasoline Car";
-						break;
-					case 2:
-						vehicleType = "Electric Car";
-						break;
-					case 3:
-						vehicleType = "Hybrid Car";
-						break;
+				SOUT.print("Enter the battery duration of the Car: ");
+                batteryDuration = sc.nextDouble();
+
+				if (opTypeCharger==1) {
+                    batteryConsumption = (batteryDuration+13)*(displacement*100);
+                } else {
+                    batteryConsumption = (batteryDuration+18)*(displacement*100);
+                }
+
+				SOUT.println("The battery consumption of the Car is: " + batteryConsumption);
+
+			}
+
+		}
+
+		switch (op) {
+			case 1:
+
+				if ( year<2022 || year2<2022 ){
+					salePrice = 500000;
+				} else {
+					salePrice = 0;
 				}
+		
+				salePrice = salePrice + (basePrice*0.04);
+		
+				if (type.equalsIgnoreCase("USED")){
+					salePrice = salePrice - (basePrice*0.02);
+				}
+				
+				SOUT.print("Enter the gas capacity of the motorcycle: ");
+				gasCapacity = sc.nextDouble();
+				
+				gasConsumption = gasCapacity * (displacement * 75);
 
-				// SOUT.println(system.addAutomobile(vehicleType, autoMobileType, basePrice, salePrice, mark, model, cylinderCapacity, mileage, isNew));
+				SOUT.println("\nThe gas consumption of the vehicle is: " + gasConsumption + "\n");
+
+				do {
+					SOUT.print("Enter the type of the motorcycle\n" +
+						"(1) STANDAR\n" +
+						"(2) SPORTIVE\n" +
+						"(3) SCOOTER\n" +
+						"(4) CROSS --> " 
+					);
+					opTypeMotorcycle = sc.nextInt();
+				} while(opTypeMotorcycle != 1 && opTypeMotorcycle != 2 && opTypeMotorcycle != 3 && opTypeMotorcycle != 4);
+
+				SOUT.print(system.motorcycleRegister(id, basePrice, salePrice, brand, modell, displacement, milleage, type, plaque, havePropertyCard, propertyCard, gasCapacity, gasConsumption, opTypeMotorcycle, price, year, amountCoverage, price2, year2, gasLevels));
 
 				break;
 			case 2:
-				String motorcycleType = "";
-				int discount = 0;	
 
-				salePrice = (sold == true) ? (salePrice * 0.04) + salePrice : salePrice - (salePrice * 0.02);
-
-				do {
-					SOUT.print("Write 0 if you do not want to add a discount otherwise write the discount percentage: ");
-					discount = sc.nextInt();
-				} while (discount < 0 || discount > 100);
-
-				salePrice = (discount != 0) ? salePrice - (salePrice * (discount/100)) : salePrice;
-
-				do {
-					SOUT.print("What is the type of your motorcycle: \n(1) ESTANDAR \n(2) DEPORTIVA \n(3) SCOOTER \n(4) CROSS \n==> ");
-					opAutoMotoType = sc.nextInt();
-				} while(opAutoMotoType != 1 && opAutoMotoType != 2 && opAutoMotoType != 3 && opAutoMotoType != 4);
-				
-				switch (opAutoMotoType) {
-					case 1:
-						motorcycleType = "ESTANDAR";
-						break;
-					case 2:
-						motorcycleType = "DEPORTIVA";
-						break;
-					case 3:
-						motorcycleType = "SCOOTER";
-						break;
-					case 4:
-						motorcycleType = "CROSS";
-						break;
-					default:
-						SOUT.println("Opcion no valida");
-						break;
+				if(year<2022 || year2<2022){
+					salePrice = 500000;
+				} else {
+					salePrice = 0;
 				}
 
-				SOUT.print("Oil capacity: ");
-				double oilCapacity = sc.nextDouble();
-				SOUT.print("Oil consume: ");
-				double oilConsume = sc.nextDouble();
+				if (type.equalsIgnoreCase("USED")) {
+					salePrice = salePrice - (basePrice*0.1);
+				}
 
-				system.addMotorcycle(basePrice, salePrice, mark, model, cylinderCapacity, mileage, isNew, oilCapacity, oilConsume, motorcycleType, sold);
-				SOUT.println("\n" + system.showVehicles());
+				system.gasCarRegister(id, basePrice, salePrice, brand, modell, displacement, milleage, type, plaque, havePropertyCard, propertyCard, numberOfDoors, polarizedWindows, tankCapacity, gasConsumption, opTypeCar, opTypeGas, price, year, amountCoverage, price2, year2, gasLevels);
 
 				break;
-			default:
-				SOUT.println("Opcion no valida");
+			case 3:
+
+				if (year<2022 || year2<2022) {
+					salePrice = 500000;
+				} else {
+					salePrice = 0;
+				}
+
+				salePrice = salePrice + (basePrice*0.2);
+
+				if (type.equalsIgnoreCase("USED")) {
+					salePrice = salePrice - (basePrice*0.1);
+				}
+
+				system.electricCarRegister(id, basePrice, salePrice, brand, modell, displacement, milleage, type, plaque, havePropertyCard, propertyCard, numberOfDoors, polarizedWindows, batteryDuration, batteryConsumption, opTypeCar, opTypeCharger, price, year, amountCoverage, price2, year2, gasLevels);
+
 				break;
+			case 4:
+
+				if (year<2022 || year2<2022) {
+					salePrice = 500000;
+				} else {
+					salePrice = 0;
+				}
+
+				salePrice = salePrice + (basePrice*0.15);
+
+				if (type.equalsIgnoreCase("USED")) {
+					salePrice = salePrice - (basePrice*0.1);
+				}
+
+				system.hybridCarRegister(id, basePrice, salePrice, brand, modell, displacement, milleage, type, plaque, havePropertyCard, propertyCard, numberOfDoors, polarizedWindows, tankCapacity, gasConsumption, batteryDuration, batteryConsumption, opTypeCar, opTypeGas, opTypeCharger, price, year, amountCoverage, price2, year2, gasLevels);
+
+				break;
+
 		}
 	}
+
+	public String showSalePrice(){
+
+        String out = "";
+        int carToSearch;
+
+		SOUT.println(system.showVehicles());
+        SOUT.print("Choose the vehicle you want to calculate the total sale price: ");
+        carToSearch = sc.nextInt();
+
+        SOUT.println("The sale price is: " + system.calculateTotalSalePrice(carToSearch) + "\n");
+
+        return out;
+    }
+
+    public String generateReport(){
+
+        String out = "";
+
+        SOUT.println("\n*--- ALL INFORMATION ---*\n");
+		SOUT.println(system.showReport());
+   
+        return out;
+    }
+
+    public String searchVehicleById(){
+
+        String out = "";
+        String id = "";
+
+        SOUT.print("\nEnter the id of the vehicle you want to search: ");
+        id = sc.next();
+
+        SOUT.println(system.vehicleId(id));
+
+        return out;
+    }
+
+    public String printMap(){
+
+        String out = "";
+
+		SOUT.println("*--- MAP ---*");
+        SOUT.println(system.printMap());
+
+        return out;
+    }
+
+    public String systemReports(){
+
+        String out = "";
+        int op;
+        boolean flag = true;
+
+        do{
+            SOUT.print("Pick an option: " + "\n"+
+                           "(1) List of vehicles and their information in a range of years\n" +
+                           "(2) Data of the oldest and newest vehicle\n"+
+                           "(3) Parking lot occupancy rate --> ");
+            op = sc.nextInt();
+            sc.nextLine(); 
+
+            switch(op){
+
+               case 1:
+                   SOUT.println(system.vehicleList());
+                   flag =false;
+                   break;
+                case 2: 
+                    SOUT.println(system.oldestAndNewer());
+                    flag =false;
+                    break;
+                case 3:
+                    double percentage;
+                    percentage = (system.parkingOcupation()/50*100);
+                    SOUT.println("The ocupation percentage of the system lot is: " + percentage + "%");
+                    flag =false;
+                   break;  
+                default:
+                   SOUT.println("Wrong option");      
+            }
+        } while(flag);
+
+        return out;
+    }
+
 } 

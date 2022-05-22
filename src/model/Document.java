@@ -1,21 +1,20 @@
 package model;
 
-public abstract class Document 
-{
-    // Attributes
-    private double price;
-    private int year;
-    private int[][] image = new int[4][4];
-    
-    // Constructor
-    public Document(double price, int year, int[][] image) {
+public abstract class Document {
+
+    public static final int filas = 4;
+    public static final int columnas = 4;
+
+    protected double price;
+    protected int year;
+    protected String image;
+
+    public Document(double price, int year, String image){
         this.price = price;
         this.year = year;
         this.image = image;
     }
-
-    // Getters and Setters
-
+    
     /**
      * @return double return the price
      */
@@ -45,21 +44,17 @@ public abstract class Document
     }
 
     /**
-     * @return int[][] return the image
+     * @return String return the image
      */
-    public int[][] getImage() {
+    public String getImage() {
         return image;
     }
 
     /**
      * @param image the image to set
      */
-    public void setImage(int[][] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    // toString
-    public String toString() {
-        return "toString Document";
-    }
 }
